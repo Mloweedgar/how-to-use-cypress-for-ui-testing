@@ -1,3 +1,6 @@
+![Zanzibar-mix](https://user-images.githubusercontent.com/12539814/202806895-928bb26c-a38b-487a-a49b-6738e37f1b1b.jpg)
+
+
 ### How to write End to End and Component Tests with [Cypress](https://www.cypress.io) in Vue
 
 #### Introduction
