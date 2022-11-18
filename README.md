@@ -450,7 +450,7 @@ To run the test, launch cypress using `cypress:open`. this time select "componen
 
 #### Next Steps
 
-In this is meant to provide knowledge on how to setup and run tests using cypress, however you will need to further learn cypress and its API to write better and efficient tests. below are links to resources further learning testing with cypress.
+This article is meant to provide you with knowledge on how to setup and run tests using cypress, however you will need to further learn cypress and its API to write better and efficient tests. below are links to resources further learning testing with cypress.
 
 1. **Cypress core concepts:** https://docs.cypress.io/guides/core-concepts/introduction-to-cypress
 
