@@ -32,7 +32,7 @@ vue create todo-app
 
 ```
 3. `cd` into the **todo-app** project and Install cypress with only one command:
-_There are no servers, drivers, or any other dependencies to install or configure. You can write your first passing test in 60 seconds_
+_No dependencies, extra downloads, or changes to your code required!_
 
 ```bash
  npm install cypress --save-dev
@@ -167,7 +167,7 @@ TodoListItem displays a todo along with a button for removing that Todo
 				@remove="removeTodo"
 			/>
 		</ul>
-		<p v-else>
+		<p class="empty-state-message" v-else>
 			Nothing left in the list. Add a new todo in the input above.
 		</p>
 	</div>
@@ -185,20 +185,7 @@ export default {
 	},
   data () {
     return {
-      todos: [
-				{
-					id: nextTodoId++,
-					text: 'Tests are fun'
-				},
-				{
-					id: nextTodoId++,
-					text: 'Write tests'
-				},
-				{
-					id: nextTodoId++,
-					text: 'Write more tests'
-				}
-			]
+      todos: []
     }
   },
 	methods: {
@@ -280,7 +267,193 @@ and visit [http://localhost:8080](http://localhost:8080) to view your todo App!
 
 
 #### End to End testing
-https://www.digitalocean.com/community/markdown#?md=%23%23%23+How+to+write+End+to+End+and+Component+Tests+with+%5BCypress%5D%28https%3A%2F%2Fwww.cypress.io%29+in+Vue%0A%0A%23%23%23%23+Introduction%0AIs+writing+tests+painful+for+you%3F+In+this+tutorial%2C+I+am+going+to+explain+how+to+handle+UI+testing+with+%5BCypress%5D%28https%3A%2F%2Fwww.cypress.io%29+and+convince+you+that+writing+tests+is+not+always+so+tedious+and+expensive+but+fun+instead.%0A%0A%5BCypress%5D%28https%3A%2F%2Fwww.cypress.io%29+is+a+purely+**JavaScript-based+front-end+testing+tool+built+for+the+modern+web**.+it+can+test+anything+that+runs+in+browser+and+has+built+in+support+for+testing+modern+frameworks+such+as+Vue%2C+React+and+Angular.+see+a+full-list+of+all+supported+front-end+frameworks+%5Bhere%5D%28https%3A%2F%2Fdocs.cypress.io%2Fguides%2Fcomponent-testing%2Foverview%23Supported-Frameworks%29.%0A%0AWe+are+going+to+use+a+Todo+app+built+using+Vue+as+an+example%2C+through+that+we+are+going+to+learn%3B%0A%0A*+How+to+Install+and+Setup+Cypress.%0A*+Creating+a+simple+Todo+App+with+Vue+3%0A*+How+to+write+End+to+End+test.%0A*+How+to+write+component+tests.%0A%0A%0A%0A%23%23%23%23++How+to+Install+and+Setup+Cypress%0A1.+First+thing+first+lets+create+new+Vue+project+using+Vue+CLI.%0AInstall+Vue+CLI+if+you+don%27t+have+it+in+your+machine%3A%0A%0A%60%60%60bash%0A%0Anpm+install+-g+%40vue%2Fcli%0A%0A%60%60%60%0A%0A2.+create+a+project%28pick+%60Vue+3%2Cbabel%2Ceslint%60+preset+%29%3A%0A%0A%60%60%60bash%0A%0Avue+create+todo-app%0A%0A%60%60%60%0A3.+%60cd%60+into+the+**todo-app**+project+and+Install+cypress+with+only+one+command%3A%0A_There+are+no+servers%2C+drivers%2C+or+any+other+dependencies+to+install+or+configure.+You+can+write+your+first+passing+test+in+60+seconds%21_%0A%0A%60%60%60bash%0A+npm+install+cypress+--save-dev%0A%0A%60%60%60%0A%0A3.+Edit+package.json+file+in+scripts+section+add+a+command+%60%22cypress%3Aopen%22%3A+%22cypress+open%22%60.+see+example+below.%0A%0A%60%60%60json%0A%0A%22scripts%22%3A+%7B%0A++++%22cypress%3Aopen%22%3A+%22cypress+open%22%0A++%7D%2C%0A%0A%60%60%60%0A4.+Launch+cypress%3A%0A%0A%60%60%60bash%0A%0A+npm+run+cypress%3Aopen%0A%0A%60%60%60%0AUse+the+Launch+pad+to+configure+both+E2E+Testing+and+Component+Testing.+if+you+get+stuck+please+visit+this+%5Blink+here%5D%28https%3A%2F%2Fdocs.cypress.io%2Fguides%2Fgetting-started%2Fopening-the-app%23The-Launchpad%29+to+cypress+official+docs+on+how+to+configure+cypress.+%0A%0A%0A%0A%0A%23%23%23%23+Create+a+Todo+App+with+Vue+3%0AOpen+**todo-app**+project+in+your+favourite+Editor+and+add+the+following+single+file+components%3A%0A1.+Add+BaseTextInput+Component+%60src%2Fcomponents%2FBaseTextInput.vue%60+%0A%0A%60%60%60javaScript%0A%0A%3Ctemplate%3E%0A++++%3Cform+class%3D%22add-todo-form%22%3E%0A++++++++%3Cinput+type%3D%22text%22+class%3D%22input%22+placeholder%3D%22Add+a+new+todo%22+v-model%3D%22todo%22%3E%0A++++++++%3Cinput+type%3D%22submit%22+value%3D%22Add%22+%40click%3D%22emitNewTodoEvent%22%3E%0A++++%3C%2Fform%3E%0A%3C%2Ftemplate%3E%0A++%0A%3Cscript%3E%0Aexport+default+%7B%0A++++data%28%29+%7B%0A++++++++return+%7B%0A++++++++++++todo%3A+%27%27%0A++++++++%7D%0A++++%7D%2C%0A++++methods%3A+%7B%0A++++++++emitNewTodoEvent%28e%29+%7B%0A++++++++++++e.preventDefault%28%29%3B%0A++++++++++++this.%24emit%28%27newTodo%27%2C+this.todo%29%3B%0A++++++++++++this.todo+%3D+%27%27%3B%0A++++++++%7D%0A++++%7D%0A%7D%0A%3C%2Fscript%3E%0A++%0A%3Cstyle+scoped%3E%0A.input+%7B%0A++++width%3A+100%25%3B%0A++++padding%3A+8px+10px%3B%0A++++border%3A+1px+solid+%2332485F%3B%0A%7D%0A%0A.add-todo-form+%7B%0A++++width%3A+100%25%3B%0A++++display%3A+flex%3B%0A++++align-items%3A+center%3B%0A%7D%0A%0Ainput%5Btype%3D%22submit%22%5D+%7B%0A++++margin-left%3A+5px%3B%0A++++padding%3A+8px+10px%3B%0A++++border%3A+1px+solid+%2332485F%3B%0A++++background-color%3A+%2332485F%3B%0A++++color%3A+%23fff%3B%0A++++font-weight%3A+bold%3B%0A++++cursor%3A+pointer%3B%0A%7D%0A%0Ainput%5Btype%3D%22submit%22%5D%3Ahover+%7B%0A++++background-color%3A+%2300C185%3B%0A%7D%0A%3C%2Fstyle%3E%0A++%0A%0A%60%60%60+%0A+BaseTextInput+will+contain+a+text+input+and+a+button+for+adding+new+todos.%0A%0A2.+Add+TodoListItem+Component+%60src%2Fcomponents%2FTodoListItem.vue%60%0A%0A%60%60%60javaScript%0A%0A%3Ctemplate%3E%0A++++%3Cli%3E%0A++++++%7B%7B+todo.text+%7D%7D%0A++++++%3Cbutton+%40click%3D%22%24emit%28%27remove%27%2C+todo.id%29%22%3E%0A++++++++X%0A++++++%3C%2Fbutton%3E%0A++++%3C%2Fli%3E%0A++%3C%2Ftemplate%3E%0A++%0A++%3Cscript%3E%0A++export+default+%7B%0A++++props%3A+%7B%0A++++++todo%3A+%7B%0A++++++++type%3A+Object%2C%0A++++++++required%3A+true%0A++++++%7D%0A++++%7D%0A++%7D%0A++%3C%2Fscript%3E%0A%0A%60%60%60%0ATodoListItem+displays+a+todo+along+with+a+button+for+removing+that+Todo%0A%0A%0A3.+Add+TodoList+component+%60src%2Fcomponents%2FTodoList.vue%60%0A%0A%60%60%60javaScript%0A%0A%3Ctemplate%3E%0A%09%3Cdiv%3E%0A%09%09%3CBaseTextInput+%0A%09%09%09%40newTodo%3D%22addTodo%22%0A%09%09%2F%3E%0A%09%09%3Cul+v-if%3D%22todos.length%22%3E%0A%09%09%09%3CTodoListItem%0A%09%09%09%09v-for%3D%22todo+in+todos%22%0A%09%09%09%09%3Akey%3D%22todo.id%22%0A%09%09%09%09%3Atodo%3D%22todo%22%0A%09%09%09%09%40remove%3D%22removeTodo%22%0A%09%09%09%2F%3E%0A%09%09%3C%2Ful%3E%0A%09%09%3Cp+v-else%3E%0A%09%09%09Nothing+left+in+the+list.+Add+a+new+todo+in+the+input+above.%0A%09%09%3C%2Fp%3E%0A%09%3C%2Fdiv%3E%0A%3C%2Ftemplate%3E%0A%0A%3Cscript%3E%0Aimport+BaseTextInput+from+%27.%2FBaseTextInput.vue%27%0Aimport+TodoListItem+from+%27.%2FTodoListItem.vue%27%0A%0Alet+nextTodoId+%3D+1%0A%0Aexport+default+%7B%0A%09components%3A+%7B%0A%09%09BaseTextInput%2C+TodoListItem%0A%09%7D%2C%0A++data+%28%29+%7B%0A++++return+%7B%0A++++++todos%3A+%5B%0A%09%09%09%09%7B%0A%09%09%09%09%09id%3A+nextTodoId%2B%2B%2C%0A%09%09%09%09%09text%3A+%27Tests+are+fun%27%0A%09%09%09%09%7D%2C%0A%09%09%09%09%7B%0A%09%09%09%09%09id%3A+nextTodoId%2B%2B%2C%0A%09%09%09%09%09text%3A+%27Write+tests%27%0A%09%09%09%09%7D%2C%0A%09%09%09%09%7B%0A%09%09%09%09%09id%3A+nextTodoId%2B%2B%2C%0A%09%09%09%09%09text%3A+%27Write+more+tests%27%0A%09%09%09%09%7D%0A%09%09%09%5D%0A++++%7D%0A++%7D%2C%0A%09methods%3A+%7B%0A%09%09addTodo+%28todo%29+%7B%0A++++++++++++%0A%09%09%09const+trimmedText+%3D+todo.trim%28%29%0A%09%09%09if+%28trimmedText%29+%7B%0A%09%09%09%09this.todos.unshift%28%7B%0A%09%09%09%09%09id%3A+nextTodoId%2B%2B%2C%0A%09%09%09%09%09text%3A+trimmedText%0A%09%09%09%09%7D%29%0A%09%09%09%0A%09%09%09%7D%0A%09%09%7D%2C%0A%09%09removeTodo+%28idToRemove%29+%7B%0A%09%09%09this.todos+%3D+this.todos.filter%28todo+%3D%3E+%7B%0A%09%09%09%09return+todo.id+%21%3D%3D+idToRemove%0A%09%09%09%7D%29%0A%09%09%7D%0A%09%7D%0A%7D%0A%3C%2Fscript%3E%0A%0A%60%60%60+%0A%0ATodoList+component+lists+all+todos.%0A%0A4.+Edit+App+component+%60src%2FApp.vue%60+to+include+code+that+will+render+the+Todo+App.%0A%0A%60%60%60javaScript%0A%0A%3Ctemplate%3E%0A%09%3Cdiv+id%3D%22app%22%3E%0A%09%09%3Ch1%3EMy+Todo+App%21%3C%2Fh1%3E%0A%09%09%3CTodoList%2F%3E%0A%09%3C%2Fdiv%3E%0A%3C%2Ftemplate%3E%0A%0A%3Cscript%3E%0Aimport+TodoList+from+%27.%2Fcomponents%2FTodoList.vue%27%0A%0Aexport+default+%7B%0A%09components%3A+%7B%0A%09%09TodoList%0A%09%7D%0A%7D%0A%3C%2Fscript%3E%0A%0A%3Cstyle%3E%0A%0A*%2C+*%3A%3Abefore%2C+*%3A%3Aafter+%7B%0A%09box-sizing%3A+border-box%3B%0A%7D%0A%0A%23app+%7B%0A%09max-width%3A+400px%3B%0A%09margin%3A+0+auto%3B%0A%09line-height%3A+1.4%3B%0A%09font-family%3A+%27Avenir%27%2C+Helvetica%2C+Arial%2C+sans-serif%3B%0A%09-webkit-font-smoothing%3A+antialiased%3B%0A%09-moz-osx-font-smoothing%3A+grayscale%3B%0A%09color%3A+%2300C185%3B%0A%7D%0A%0Ah1+%7B%0A%09text-align%3A+center%3B%0A%7D%0A%3C%2Fstyle%3E%0A%0A%60%60%60%0A%0ALastly+run%3A%0A%60%60%60bash%0A%0Anpm+run+serve%0A%0A%60%60%60%0Aand+visit+%5Bhttp%3A%2F%2Flocalhost%3A8080%5D%28http%3A%2F%2Flocalhost%3A8080%29+to+view+your+todo+App%21%0A%0A%0A%23%23%23%23+End+to+End+testing%0A%0A%23%23%23%23+Component+Testing%0A%23%23%23%23+Next+Steps%0A
+End to end testing is used to test an application flow from start to finish. Tests are designed to use the application the same way that a user would.
+In our example we are going to test the whole todo app with the following test cases:
+
+1. User should see message when todo list is empty
+2. User should be able to view list of todos
+3. User should be able to add a new todo
+4. User should be able to remove an existing todo
+
+
+Cypress is built on top of [Mocha](https://docs.cypress.io/guides/references/bundled-libraries#Mocha) and [Chai](https://docs.cypress.io/guides/references/bundled-libraries#Chai). If you're familiar with writing tests in JavaScript, then writing tests in Cypress will be a breeze.
+Visit official cypress docs [here](https://docs.cypress.io/guides/end-to-end-testing/writing-your-first-end-to-end-test#Write-your-first-test) to learn more about How to start testing a new project in Cypress.
+
+
+Without futher ado lets start testing our todo app.
+Inside cypress folder that was added during cypress installation create a file `cypress/e2e/todo.cy.js` add the following tests. _Please visit this [link here](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests#Folder-structure) to learn more about how to organise tests in cypress and the cypress folder structure_ 
+
+
+```javaScript
+
+ /* eslint-disable no-undef */
+
+// describe() function is used to group tests
+describe('Todo tests', () => {
+  it('should display empty state message', () => {
+    // cy.visit() used to visit a remote url
+    // learn more about it here: https://docs.cypress.io/api/commands/visit#Syntax
+    cy.visit('http://localhost:8080');
+
+    // cy.get() command Gets one or more DOM elements by selector or alias
+    // learn more about cypress commands/api here: https://docs.cypress.io/api/table-of-contents
+    cy.get('.empty-state-message')
+    .contains('Nothing left in the list. Add a new todo in the input above.')
+    .should('be.visible'); 
+  });
+
+  it('should add todo', () => {
+
+    // add todo by typing in the input and pressing enter
+    cy.get('input[type="text"]').type('new todo{enter}');
+
+    // check if the todo is added
+    cy.get('ul').contains('new todo').should('be.visible');
+    cy.get('ul').find('li').should('have.length', 1);
+
+
+    // add another todo by typing in the input and pressing 'add' button
+    cy.get('input[type="text"]').type('more todo');
+    cy.get('input[type=submit]').click();
+
+    // check if the todo is added
+    cy.get('ul').contains('more todo').should('be.visible');
+    cy.get('ul').find('li').should('have.length', 2);
+  });
+  
+  it('should delete todo', () => {
+    // delete the first todo
+    cy.get(':nth-child(1) > button').click();
+
+    // check if the todo is deleted
+    // cy.should() command is used to assert that the todo list has only one todo
+    // learn more about cypress assertions here: https://docs.cypress.io/guides/references/assertions
+    cy.get('ul').find('li').should('have.length', 1);
+  });
+});
+
+});
+
+```
+
+Now run:
+
+```bash
+# to make sure vue is available on http://localhost:8080
+npm run serve
+
+```
+
+Then run:
+```bash
+# this will lounch cypress
+npm run cypress:open
+
+```
+On the cypress launcher select "End2End Tests" click on `todo.cy.js` spec to run your tests.
+
 
 #### Component Testing
+Cypress Component Test Runner executes your component tests in the browser as a user would by simulating real interactions. Since it runs in the browser, you get to debug your components using your favourite developer tools.
+
+
+
+To demonstrate how to write component tests using cypress we are going to write tests for the following components:
+
+1. `BaseTextInput.vue`
+
+2. `TodoListItem.vue`
+
+
+ Component tests for `BaseTextInput.vue`:
+
+Here we are going to assert the following;
+
+1. Text input is rendered with `placeholder` text "Add a new todo"
+2. When 'add' button is clicked 'newTodo' event is emitted with payload containing text that was type in the text input
+
+First create a spec `src/components/BaseTextInput.cy.js` and add the following code:
+
+```javaScript
+
+/* eslint-disable no-undef */
+import BaseTextInput from './BaseTextInput.vue'
+
+describe('<BaseTextInput />', () => {
+  it('renders base text input component', () => {
+    // renders the component in DOM
+    // cy.mount() is a custom command learn more about 
+    // cypress custom commands here https://docs.cypress.io/api/commands/mount#Creating-a-New-cy-mount-Command
+    cy.mount(BaseTextInput);
+
+    // asserts that the text input is rendered with the correct placeholder
+    cy.get('input').should('have.attr', 'placeholder', 'Add a new todo');
+
+    // asserts that when 'add' button is clicked, an event is emitted
+    // with the  payload containing the value of the text input
+    cy.get('input[type="text"]').type('new todo');
+    cy.get('input[type=submit]').click().then(() => {
+      // Cypress.vueWrapper provides access to the Vue Test Utils
+      // with this wrapper you can access any Vue Test Utils API
+      // learn more about Vue Test Utils here https://vue-test-utils.vuejs.org/
+      // e.g cy.vueWrapper().emitted() returns all the events emitted by the BaseTextInput component
+      cy.wrap(Cypress.vueWrapper.emitted()).should('have.property', 'newTodo');
+      expect(Cypress.vueWrapper.emitted().newTodo[0]).to.deep.equal(['new todo']);
+    });
+  })
+});
+
+```
+
+To run the test, launch cypress using `cypress:open`. this time select "component testing", then click on `BaseTextInput.cy.js`  to run tests.
+
+
+
+Component tests for `TodoListItem.vue`:
+Here we are going to assert the following
+
+1. Todo list item is rendered with correct text
+2. on-click button remove todo button, 'remove' event is emitted with payload containing the id of the todo to be removed
+
+First create a spec `src/components/TodoListItem.cy.js` and add the following code:
+
+```javaScript
+
+/* eslint-disable no-undef */
+import TodoListItem from './TodoListItem.vue'
+
+describe('<TodoListItem />', () => {
+  it('renders todo list item', () => {
+    const text = 'new todo';
+    const id = 1;
+    // mount the component with props
+    //see: https://test-utils.vuejs.org/guide/
+    cy.mount(TodoListItem, {props: {todo: { id, text }}});
+
+    // asserts that the todo list item is rendered with the correct text
+    cy.get('li').contains(text);
+
+    // asserts that when 'x' button is clicked, 'remove' event is emitted with the correct payload
+    cy.get('button').click().then(() => {
+      cy.wrap(Cypress.vueWrapper.emitted()).should('have.property', 'remove');
+      expect(Cypress.vueWrapper.emitted().remove[0]).to.deep.equal([id]);
+    })
+  })
+});
+
+```
+
+To run the test, launch cypress using `cypress:open`. this time select "component testing", then click on `TodoListItem.cy.js`  to run tests.
+
+
+
+
 #### Next Steps
+
+In this is meant to provide knowledge on how to setup and run tests using cypress, however you will need to further learn cypress and its API to write better and efficient tests. below are links to resources further learning testing with cypress.
+
+1. **Cypress core concepts:** https://docs.cypress.io/guides/core-concepts/introduction-to-cypress
+
+2. **Network Requests:** https://docs.cypress.io/guides/guides/network-requests#What-you-ll-learn
+
+3. **Cypress Best Practices:** https://docs.cypress.io/guides/references/best-practices
