@@ -55,6 +55,10 @@ _No dependencies, extra downloads, or changes to your code required!_
  npm run cypress:open
 
 ```
+When Cypress opens you should be able to view the cypress launch pad as shown in the image below.
+![Screenshot 2022-11-16 at 21 29 32](https://user-images.githubusercontent.com/12539814/202794602-c39c92ac-10f7-4985-966d-114719682383.png)
+
+
 Use the Launch pad to configure both E2E Testing and Component Testing. if you get stuck please visit this [link here](https://docs.cypress.io/guides/getting-started/opening-the-app#The-Launchpad) to cypress official docs on how to configure cypress. 
 
 
@@ -264,6 +268,8 @@ npm run serve
 
 ```
 and visit [http://localhost:8080](http://localhost:8080) to view your todo App!
+![Screenshot 2022-11-18 at 23 36 55](https://user-images.githubusercontent.com/12539814/202797938-90f13194-89db-40ba-ab40-b2b03b55a9d5.png)
+
 
 
 #### End to End testing
@@ -351,6 +357,8 @@ npm run cypress:open
 
 ```
 On the cypress launcher select "End2End Tests" click on `todo.cy.js` spec to run your tests.
+![Screenshot 2022-11-18 at 23 41 14](https://user-images.githubusercontent.com/12539814/202798735-3c8e6c77-4852-409e-80f0-ac574f3d6690.png)
+
 
 
 #### Component Testing
@@ -406,6 +414,7 @@ describe('<BaseTextInput />', () => {
 ```
 
 To run the test, launch cypress using `cypress:open`. this time select "component testing", then click on `BaseTextInput.cy.js`  to run tests.
+![Screenshot 2022-11-18 at 23 44 21](https://user-images.githubusercontent.com/12539814/202799401-b04c071d-040b-4250-94b0-1a06d551c05e.png)
 
 
 
@@ -443,10 +452,12 @@ describe('<TodoListItem />', () => {
 
 ```
 
-To run the test, launch cypress using `cypress:open`. this time select "component testing", then click on `TodoListItem.cy.js`  to run tests.
+To run the test, launch cypress using `cypress:open`. again select "component testing", then click on `TodoListItem.cy.js`  to run tests.
+![Screenshot 2022-11-18 at 23 48 03](https://user-images.githubusercontent.com/12539814/202799690-308059a9-1e44-4f80-ad38-3fd929bdaab2.png)
 
 
 
+The final source code can be found [here](https://github.com/Mloweedgar/todo-app) if you would like to clone and work with the final version of the todo-app.
 
 #### Next Steps
 
